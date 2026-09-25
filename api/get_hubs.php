@@ -1,11 +1,16 @@
 <?php
+error_reporting(0);
 require_once __DIR__ . '/../config/db.php';
 use Wasla\Config\Database;
 
 header('Content-Type: application/json');
 
 try {
-    $db = Database::getConnection();
+    $db = Database::getConnectionOrNull();
+    if ($db === null) {
+        echo json_encode(['success' => false, 'error' => 'db_unavailable', 'hubs' => []]);
+        exit;
+    }
     $stmt = $db->query('SELECT id, nom as name, latitude as lat, longitude as lon FROM communes');
     $communes = $stmt->fetchAll();
 

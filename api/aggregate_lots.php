@@ -48,10 +48,10 @@ try {
     $stmt = $db->query($query);
     $pendingOffers = $stmt->fetchAll();
 
-    if (count($pendingOffers) === 0) {
+    if (count($pendingOffers) <= 1) {
         echo json_encode([
             'success' => true,
-            'message' => 'No pending offers available for aggregation.',
+            'message' => 'Not enough offers to cluster, leaving as pending',
             'lots_created' => 0,
             'lots' => []
         ]);
@@ -73,21 +73,47 @@ try {
     // 3. Process aggregation inside a secure Transaction
     $db->beginTransaction();
 
-    foreach ($groupsByProduct as $productName => $offers) {
-        // Group offers of this product by commune to ensure spatial proximity
-        $byCommune = [];
-        foreach ($offers as $offer) {
-            $communeId = (int)$offer['commune_id'];
-            if (!isset($byCommune[$communeId])) {
-                $byCommune[$communeId] = [];
-            }
-            $byCommune[$communeId][] = $offer;
-        }
+    // Helper function for Haversine distance
+    function getDistance($lat1, $lon1, $lat2, $lon2) {
+        $earthRadius = 6371; // km
+        $latFrom = deg2rad((float)$lat1);
+        $lonFrom = deg2rad((float)$lon1);
+        $latTo = deg2rad((float)$lat2);
+        $lonTo = deg2rad((float)$lon2);
 
-        foreach ($byCommune as $communeId => $communeOffers) {
-            // Calculate total weight of offers for this product in this commune
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $a = sin($latDelta / 2) * sin($latDelta / 2) +
+             cos($latFrom) * cos($latTo) *
+             sin($lonDelta / 2) * sin($lonDelta / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        return $earthRadius * $c;
+    }
+
+    foreach ($groupsByProduct as $productName => $offers) {
+        // Group offers of this product by spatial proximity (50 km radius)
+        $clusters = [];
+        foreach ($offers as $offer) {
+            $placed = false;
+            foreach ($clusters as &$cluster) {
+                // Check distance to the first offer in the cluster
+                if (getDistance($offer['latitude'], $offer['longitude'], $cluster[0]['latitude'], $cluster[0]['longitude']) <= 50) {
+                    $cluster[] = $offer;
+                    $placed = true;
+                    break;
+                }
+            }
+            if (!$placed) {
+                $clusters[] = [$offer];
+            }
+        }
+        unset($cluster);
+
+        foreach ($clusters as $clusterOffers) {
+            // Calculate total weight of offers for this product in this cluster
             $totalWeight = 0.0;
-            foreach ($communeOffers as $offer) {
+            foreach ($clusterOffers as $offer) {
                 $totalWeight += (float)$offer['quantite_kg'];
             }
 
@@ -98,13 +124,13 @@ try {
                 $sumLon = 0.0;
                 $offerIds = [];
 
-                foreach ($communeOffers as $offer) {
+                foreach ($clusterOffers as $offer) {
                     $sumLat += (float)$offer['latitude'];
                     $sumLon += (float)$offer['longitude'];
                     $offerIds[] = (int)$offer['id'];
                 }
 
-                $count = count($communeOffers);
+                $count = count($clusterOffers);
                 $centroidLat = $sumLat / $count;
                 $centroidLon = $sumLon / $count;
 
@@ -133,8 +159,8 @@ try {
                 $createdLots[] = [
                     'lot_id' => $lotId,
                     'product' => $productName,
-                    'commune_id' => $communeId,
-                    'commune_nom' => $communeOffers[0]['commune_nom'],
+                    'commune_id' => $clusterOffers[0]['commune_id'],
+                    'commune_nom' => $clusterOffers[0]['commune_nom'],
                     'total_weight_kg' => $totalWeight,
                     'co2_saved_kg' => $co2Avoided,
                     'centroid' => [

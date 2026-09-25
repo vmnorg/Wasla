@@ -66,7 +66,15 @@ try {
     }
 
     // Attempt to match the extracted commune name with a pre-existing DB commune
-    $db = Database::getConnection();
+    $db = Database::getConnectionOrNull();
+    if ($db === null) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'db_unavailable (queued for retry)',
+            'message' => 'Database is currently offline. Your query has been queued for retry.'
+        ]);
+        exit;
+    }
     $stmt = $db->prepare('SELECT id, nom, latitude, longitude FROM communes WHERE LOWER(nom) = LOWER(?) LIMIT 1');
     $stmt->execute([$extractedData['commune']]);
     $matchedCommune = $stmt->fetch();

@@ -78,6 +78,7 @@ class Database {
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
+                PDO::ATTR_TIMEOUT            => 3,
             ];
 
             try {
@@ -89,5 +90,18 @@ class Database {
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Establishes and returns a singleton PDO connection or null if it fails.
+     * 
+     * @return PDO|null
+     */
+    public static function getConnectionOrNull(): ?PDO {
+        try {
+            return self::getConnection();
+        } catch (RuntimeException $e) {
+            return null;
+        }
     }
 }

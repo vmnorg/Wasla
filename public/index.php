@@ -65,6 +65,20 @@
         .leaflet-popup-tip {
             background: rgba(255, 255, 255, 0.96) !important;
         }
+
+        /* RTL Leaflet Styling for Arabic */
+        html[dir="rtl"] .leaflet-popup-content-wrapper {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+        html[dir="rtl"] .leaflet-popup-content,
+        html[dir="rtl"] .preset-pill {
+            direction: rtl !important;
+            text-align: right !important;
+            width: auto !important;
+            max-width: 300px;
+            font-family: 'Amiri', 'Arial Arabic', 'Times New Roman', serif !important;
+        }
     </style>
     
     <!-- Tailwind CSS CDN -->
@@ -97,7 +111,7 @@
               fontFamily: {
                 sans: ["Inter", "sans-serif"],
                 display: ["'Plus Jakarta Sans'", "sans-serif"],
-                arabic: ["'Amiri'", "serif"]
+                arabic: ["'Amiri'", "'Arial Arabic'", "'Times New Roman'", "serif"]
               }
             }
           }
@@ -110,9 +124,9 @@
     <header class="h-16 shrink-0 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-6 z-50 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
         <!-- Left: Brand Logo & Territorial Hub Indicator -->
         <div class="flex items-center gap-6">
-            <a class="flex items-center focus:outline-none transition-transform hover:scale-[1.01]" href="#">
+            <a class="flex items-center focus:outline-none transition-transform hover:scale-[1.01] shrink-0" href="#">
                 <!-- Inline SVG Logo for extreme fidelity -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" class="h-10 w-auto object-contain">
+                <svg dir="ltr" style="direction: ltr;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" class="h-10 w-auto shrink-0 object-contain">
                   <defs>
                     <linearGradient id="waslaGreen" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stop-color="#065f46" />
@@ -739,22 +753,45 @@
 
             markersGroup = L.layerGroup().addTo(map);
 
-            // Fetch dynamic hubs
+            // Fetch dynamic hubs with fallback
             fetch('../api/get_hubs.php')
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) throw new Error("HTTP " + res.status);
+                    return res.json();
+                })
                 .then(data => {
-                    if (data.success) {
+                    if (data && data.success) {
                         communesData = data.communesData;
                         coopHubs = data.coopHubs;
-                        renderCommunes();
-                        if (activeTab === 'coop' && coopLayer) {
-                            getCoopLayer().clearLayers();
-                            coopLayer = null; // force recreation
-                            switchMapTab('coop');
-                        }
+                    } else {
+                        throw new Error(data ? data.error : "Unknown API error");
                     }
                 })
-                .catch(err => console.error("Error fetching hubs:", err));
+                .catch(err => {
+                    console.error("Error fetching hubs, using hardcoded fallback:", err);
+                    communesData = [
+                        { id: 1, name: "Casablanca", lat: 33.5731, lon: -7.5898 },
+                        { id: 2, name: "Meknès", lat: 33.8730, lon: -5.5407 },
+                        { id: 3, name: "Berkane", lat: 34.9213, lon: -2.3275 },
+                        { id: 4, name: "Agadir", lat: 30.4278, lon: -9.5981 }
+                    ];
+                    coopHubs = communesData.map(c => ({
+                        id: 'c' + c.id,
+                        name: 'Coopérative ' + c.name,
+                        lat: c.lat,
+                        lon: c.lon,
+                        members: 150,
+                        products: 'Produits locaux'
+                    }));
+                })
+                .finally(() => {
+                    renderCommunes();
+                    if (activeTab === 'coop' && coopLayer) {
+                        getCoopLayer().clearLayers();
+                        coopLayer = null; // force recreation
+                        switchMapTab('coop');
+                    }
+                });
         });
 
         // Setup Communes on both panel and map
@@ -1122,6 +1159,9 @@
          * @param {'carte'|'groupage'|'coop'|'esg'} tab
          */
         function switchMapTab(tab) {
+            if (typeof listening !== 'undefined' && listening) { document.getElementById('mainMicBtn').click(); }
+            const recBadge = document.getElementById('mic-rec-badge');
+            if (recBadge) recBadge.classList.add('hidden');
             activeTab = tab;
 
             // 1. Update tab button visual states
