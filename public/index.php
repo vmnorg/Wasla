@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html class="h-full" lang="fr">
+<html class="h-full dark" lang="fr">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>WASLA وصلة - Plateforme Nationale Agri-Logistique Logitime / AI-Powered Supply Chain</title>
     
+    <script>try { document.documentElement.classList.toggle('dark', localStorage.getItem('wasla-theme') !== 'light'); } catch (_) {}</script>
+    <link rel="stylesheet" href="css/pitch.css"/>
     <!-- Preconnect & Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -47,11 +49,6 @@
         .wave-bar:nth-child(4) { animation: audio-wave 0.9s ease-in-out infinite 0.4s; }
         .wave-bar:nth-child(5) { animation: audio-wave 1.2s ease-in-out infinite 0.2s; }
         .wave-bar:nth-child(6) { animation: audio-wave 0.7s ease-in-out infinite 0.35s; }
-
-        /* Dark Map CSS Filter Override */
-        .dark-map {
-            filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
-        }
 
         /* Custom Leaflet overrides to match Stitch design */
         .leaflet-popup-content-wrapper {
@@ -121,7 +118,7 @@
 <body class="bg-[#f8fafc] text-slate-800 font-sans h-screen flex flex-col antialiased select-none overflow-hidden">
 
     <!-- TOP APP NAVIGATION BAR -->
-    <header class="h-16 shrink-0 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-6 z-50 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+    <header class="app-header shrink-0 bg-white/95 backdrop-blur-md border-b border-slate-200/90 z-50 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
         <!-- Left: Brand Logo & Territorial Hub Indicator -->
         <div class="flex items-center gap-6">
             <a class="flex items-center focus:outline-none transition-transform hover:scale-[1.01] shrink-0" href="#">
@@ -178,15 +175,12 @@
             </button>
         </nav>
         
-        <!-- Right: NLU Status, Notifications, Language Switcher & Profile -->
-        <div class="flex items-center gap-4">
-            <div class="hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-light opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-mid"></span>
-                </span>
-                <span class="text-xs font-semibold text-emerald-deep" data-i18n="nlu_status">Darija NLU v4.2 Connecté</span>
-            </div>
+        <!-- Right: Shipment tracking, language & profile -->
+        <div class="header-actions flex items-center gap-2 sm:gap-3">
+            <button id="tracking-open" type="button" class="tracking-trigger flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-bold" aria-haspopup="dialog">
+                <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span><span>Suivi d’expédition</span>
+            </button>
+
             
             <!-- Language Switcher -->
             <div class="hidden md:flex relative items-center bg-white rounded-lg px-2 py-1 border border-slate-200 shadow-sm cursor-pointer hover:border-slate-300 transition-colors">
@@ -218,10 +212,10 @@
     </header>
 
     <!-- MAIN OPERATIONAL WORKSPACE (SPLIT SCREEN LAYOUT) -->
-    <div class="flex-1 flex overflow-hidden relative">
+    <div class="workspace flex-1 flex flex-col lg:flex-row overflow-hidden relative">
         
         <!-- LEFT PANEL: VOICE-FIRST HERO & ESG METRICS COCKPIT -->
-        <aside class="w-[460px] 2xl:w-[490px] h-full shrink-0 bg-white border-r border-slate-200/90 z-20 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] overflow-y-auto">
+        <aside class="operations-panel w-full lg:w-[360px] xl:w-[420px] 2xl:w-[460px] h-full shrink-0 bg-white border-r border-slate-200/90 z-20 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] overflow-y-auto">
             <div class="p-5 sm:p-6 flex flex-col gap-5">
                 
                 <!-- SECTION 1: VOICE-FIRST HERO CARD (Cleaned spacing: p-5 space-y-4) -->
@@ -498,7 +492,7 @@
         </aside>
         
         <!-- RIGHT PANEL: FULL-BLEED INTERACTIVE MAP AREA WITH OVERLAYS (No outer padding, z-index managed) -->
-        <main class="flex-1 h-full relative overflow-hidden bg-slate-100">
+        <main class="map-workspace min-w-0 flex-1 h-full relative overflow-hidden bg-slate-100">
             
             <!-- INTERACTIVE LEAFLET MAP CONTAINER (w-full h-full relative z-0) -->
             <div id="map" class="w-full h-full relative z-0 transition-all duration-300"></div>
@@ -540,7 +534,7 @@
             </div>
             
             <!-- BOTTOM FLOATING REGIONAL COURIER TRAY (absolute z-10 with bottom-4 left-4 right-4) -->
-            <div class="absolute bottom-4 left-4 right-4 z-10 pointer-events-none">
+            <div class="courier-tray absolute bottom-4 left-4 right-4 z-10 pointer-events-none">
                 <div class="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-xl pointer-events-auto">
                     <!-- Clean Horizontal Row Layout -->
                     <div class="flex flex-row items-center justify-between gap-3 w-full p-3">
@@ -725,6 +719,40 @@
         </main>
     </div>
 
+    <div id="toast-region" class="fixed top-4 right-4 z-[10000] flex flex-col gap-3 pointer-events-none" aria-label="Notifications"></div>
+    <dialog id="tracking-dialog" aria-labelledby="tracking-title" aria-describedby="tracking-description">
+        <div class="tracking-content">
+            <div class="flex items-start justify-between gap-4">
+                <div><p class="tracking-eyebrow">WASLA / TRANSPORT</p><h2 id="tracking-title" class="font-display text-2xl font-bold mt-2">Suivi d’expédition</h2></div>
+                <button id="tracking-close" type="button" class="icon-button" aria-label="Fermer le suivi"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+            </div>
+            <p id="tracking-description" class="tracking-muted text-sm mt-3">Démonstration · Trajet et données GPS simulés.</p>
+            <div class="tracking-summary flex flex-wrap items-center justify-between gap-3 mt-6">
+                <span class="font-mono text-sm">EXP-SM-0248</span><span id="tracking-status" class="transit-badge"><span class="signal-dot"></span>En transit</span>
+            </div>
+            <div class="route-visual mt-5" aria-label="Trajet simulé de Massa vers Agadir">
+                <svg viewBox="0 0 480 200" role="img" aria-label="Schéma du parcours Massa–Agadir">
+                    <path class="route-secondary" d="M0 50L480 130M60 0L150 200M260 0L220 200M400 0L340 200M0 160L480 45"/>
+                    <path class="route-line" d="M40 150 L120 150 L180 100 L280 100 L350 50 L440 50"/>
+                    <path id="tracking-route-progress" class="route-completed" pathLength="100" d="M40 150 L120 150 L180 100 L280 100 L350 50 L440 50"/>
+                    <circle cx="40" cy="150" r="6" fill="#34d399"/><circle cx="440" cy="50" r="6" fill="#fb923c"/>
+                    <g id="tracking-truck"><circle r="17" fill="#065f46" stroke="#6ee7b7" stroke-width="2"/><path d="M-9 -5H3V5H-9ZM3 -2H7L10 2V5H3" fill="none" stroke="white" stroke-width="1.5"/><circle cx="-5" cy="7" r="2" fill="white"/><circle cx="6" cy="7" r="2" fill="white"/></g>
+                    <text x="30" y="181">MASSA</text><text x="373" y="28">AGADIR</text>
+                </svg>
+                <span class="route-caption font-mono">SOUSS-MASSA / N1 · SCHÉMA</span>
+            </div>
+            <div class="flex justify-between gap-3 text-sm mt-6 mb-3"><span>Progression du trajet</span><strong id="tracking-percent" class="font-mono">38 %</strong></div>
+            <div id="tracking-progress" role="progressbar" aria-label="Progression du trajet simulé" aria-valuemin="0" aria-valuemax="100" aria-valuenow="38"><div id="tracking-fill"></div></div>
+            <dl class="tracking-metrics grid grid-cols-2 gap-3 mt-5">
+                <div><dt>Arrivée estimée</dt><dd id="tracking-eta">—</dd></div><div><dt>Vitesse simulée</dt><dd id="tracking-speed">64 km/h</dd></div>
+                <div><dt>Distance restante</dt><dd id="tracking-distance">—</dd></div><div><dt>Chargement</dt><dd>8.4 / 10 t</dd></div>
+            </dl>
+            <div class="tracking-gps mt-5"><span class="tracking-muted text-xs">POSITION GPS SIMULÉE</span><p id="tracking-coordinates" class="font-mono mt-2" dir="ltr">—</p><p id="tracking-updated" class="tracking-muted text-xs mt-2">—</p></div>
+            <ol class="tracking-stops mt-5 text-sm"><li><span class="signal-dot"></span><div>Massa · Chargement terminé<p class="tracking-muted text-xs mt-1">Coopérative agricole / 8.4 tonnes</p></div></li><li><span class="destination-dot"></span><div>Agadir · Livraison au hub<p id="tracking-destination" class="tracking-muted text-xs mt-1">Réception planifiée</p></div></li></ol>
+            <div class="flex gap-3 mt-6"><button id="tracking-pause" class="tracking-trigger rounded-xl px-4 py-3 text-sm font-bold" type="button">Mettre en pause</button><button id="tracking-restart" class="icon-button px-3 text-sm" type="button">Rejouer</button></div>
+        </div>
+    </dialog>
+    <script src="js/pitch.js"></script>
     <!-- Leaflet JS Map Script -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
@@ -957,12 +985,12 @@
                             .openPopup();
                     }
                 } else {
-                    alert("Erreur de traitement: " + (data.error || "Inconnu"));
+                    showToast("Erreur de traitement: " + (data.error || "Inconnu"));
                 }
             })
             .catch(err => {
                 console.error("API error:", err);
-                alert("Erreur d'accès à l'API de traitement NLU.");
+                showToast("Erreur d'accès à l'API de traitement NLU.");
             });
         });
 
@@ -1015,18 +1043,18 @@
                         document.getElementById("sidebar-metric-tonnage").innerText = `${totalTons.toFixed(1)} t`;
                         document.getElementById("sidebar-metric-co2").innerText = `${totalCo2.toFixed(0)} kg`;
 
-                        alert(`Succès! ${data.lots_created} Lot(s) Logistique(s) compilé(s) à partir de vos offres agricoles.`);
+                        showToast(`Succès! ${data.lots_created} Lot(s) Logistique(s) compilé(s) à partir de vos offres agricoles.`, "success");
                     } else {
                         // Demonstrate simulation if DB has no real farmer offers posted yet
                         simulateLotAggregation();
                     }
                 } else {
-                    alert("Erreur de compilation: " + data.message);
+                    showToast("Erreur de compilation: " + data.message);
                 }
             })
             .catch(err => {
                 console.error("Aggregation API error:", err);
-                alert("Erreur d'accès à l'API de groupement. Démarrage de la simulation locale...");
+                showToast("Erreur d'accès à l'API de groupement. Démarrage de la simulation locale...");
                 simulateLotAggregation();
             });
         }
@@ -1069,7 +1097,7 @@
             // Center view
             map.setView([30.02, -9.60], 11, { animate: true });
 
-            alert("Simulation: 2 Lots Logistiques créés en Souss-Massa (Massa et Belfaa) avec un total de 13.6 Tonnes consolidées, économisant 1632 kg de CO₂ !");
+            showToast("Simulation: 2 Lots Logistiques créés en Souss-Massa (Massa et Belfaa) avec un total de 13.6 Tonnes consolidées, économisant 1632 kg de CO₂ !", "success");
         }
 
         // Mic Button pulse toggle interaction
@@ -1098,24 +1126,6 @@
               micRecBadge.classList.add('bg-slate-100', 'text-slate-500');
               micRecBadge.innerText = 'PAUSÉ';
               waveBars.forEach(bar => bar.style.animationPlayState = 'paused');
-            }
-          });
-        }
-
-        // Map style button toggle (Dark / Light mode simulation using CSS Filter on the map)
-        const mapStyleBtn = document.getElementById('mapStyleBtn');
-        const mapElement = document.getElementById('map');
-        let isLight = true;
-
-        if (mapStyleBtn && mapElement) {
-          mapStyleBtn.addEventListener('click', () => {
-            isLight = !isLight;
-            if (!isLight) {
-              mapElement.classList.add('dark-map');
-              mapStyleBtn.innerHTML = '<span class="material-symbols-outlined text-sm">dark_mode</span><span>Mode Sombre</span>';
-            } else {
-              mapElement.classList.remove('dark-map');
-              mapStyleBtn.innerHTML = '<span class="material-symbols-outlined text-sm">light_mode</span><span>Mode Clair</span>';
             }
           });
         }
@@ -1266,7 +1276,7 @@
                 nav_groupage: "Groupage & Fret",
                 nav_coop: "Réseau Coopératives",
                 nav_esg: "Indicateurs ESG",
-                nlu_status: "Darija NLU v4.2 Connecté",
+
                 role: "Chef Logistique Nationale",
                 saisie_vocale: "Saisie Vocale Darija",
                 hub_national: "Réseau National",
@@ -1341,7 +1351,7 @@
                 nav_groupage: "Consolidation & Freight",
                 nav_coop: "Cooperatives Network",
                 nav_esg: "ESG Indicators",
-                nlu_status: "Darija NLU v4.2 Connected",
+
                 role: "National Logistics Lead",
                 saisie_vocale: "Darija Voice Input",
                 hub_national: "National Network",
@@ -1416,7 +1426,7 @@
                 nav_groupage: "التجميع والشحن",
                 nav_coop: "شبكة التعاونيات",
                 nav_esg: "مؤشرات الحوكمة",
-                nlu_status: "متصل Darija NLU v4.2",
+
                 role: "مدير اللوجستيات الوطنية",
                 saisie_vocale: "إدخال صوتي بالدارجة",
                 hub_national: "الشبكة الوطنية",
