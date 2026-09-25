@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WASLA وصلة - Logistique Agricole &amp; Groupage Souss-Massa</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Amiri:ital,wght@0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+      body { -webkit-font-smoothing: antialiased; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.18); opacity: 0.25; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+    .animate-pulse-ring {
+      animation: pulse-ring 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+    @keyframes audio-wave {
+      0%, 100% { height: 6px; }
+      50% { height: 26px; }
+    }
+    .wave-bar:nth-child(1) { animation: audio-wave 1.1s ease-in-out infinite 0.1s; }
+    .wave-bar:nth-child(2) { animation: audio-wave 0.8s ease-in-out infinite 0.25s; }
+    .wave-bar:nth-child(3) { animation: audio-wave 1.3s ease-in-out infinite 0.05s; }
+    .wave-bar:nth-child(4) { animation: audio-wave 0.9s ease-in-out infinite 0.4s; }
+    .wave-bar:nth-child(5) { animation: audio-wave 1.2s ease-in-out infinite 0.2s; }
+    .wave-bar:nth-child(6) { animation: audio-wave 0.7s ease-in-out infinite 0.35s; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              deep: "#065f46",
+              mid: "#047857",
+              light: "#10b981",
+              soft: "#ecfdf5",
+              glow: "#34d399"
+            },
+            terracotta: {
+              DEFAULT: "#c2410c",
+              vibrant: "#ea580c",
+              accent: "#f97316",
+              light: "#fff7ed",
+              deep: "#9a3412"
+            },
+            surface: {
+              canvas: "#f8fafc",
+              card: "#ffffff"
+            }
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["'Plus Jakarta Sans'", "sans-serif"],
+            arabic: ["'Amiri'", "serif"]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 font-sans h-screen flex flex-col antialiased select-none">
+<!-- TOP APP NAVIGATION BAR -->
+<header class="h-16 shrink-0 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-6 z-50 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+<!-- Left: Brand Logo & Territorial Hub Indicator -->
+<div class="flex items-center gap-6">
+<a class="flex items-center focus:outline-none transition-transform hover:scale-[1.01]" href="#">
+<img alt="WASLA Logo" class="h-9 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1We1vkYbbt74ocQy-pf8AFQ2wrYJfQBJLmKFJwgqXkdBeV2qLI9paztizloJNOCs5tWinLmK3UFJ07OEuQyygfsqyvSCknQZqBOhX7V8Zh3fT0Ipu1-Z-dP_l7f9oc5QDMJ2huTdqdMC90lNirlCBweaRn8XmNYSO7hnaWePCgBw1cD8JSJMQ3WF_3riy6CIXSTLpHBk02fgHcqJgujws2DJ6z-SfUIpnpxGLhJ3goqag"/>
+</a>
+<div class="h-6 w-[1px] bg-slate-200 hidden md:block"></div>
+<div class="hidden md:flex items-center gap-2 bg-emerald-soft/80 border border-emerald-deep/15 px-3 py-1.5 rounded-full text-emerald-deep">
+<span class="material-symbols-outlined text-emerald-mid text-lg">location_on</span>
+<span class="font-display font-bold text-xs tracking-tight">Hub Souss-Massa</span>
+<span class="text-slate-300">•</span>
+<span class="text-xs text-emerald-mid font-medium">Belfaa · Biougra · Taroudant · Inezgane</span>
+</div>
+</div>
+<!-- Center: Main Module Navigation Tabs -->
+<nav class="hidden lg:flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200/70">
+<a class="px-4 py-1.5 rounded-lg font-display text-xs font-bold bg-emerald-deep text-white shadow-sm flex items-center gap-1.5 transition-all" href="#">
+<span class="material-symbols-outlined text-base">map</span>
+<span>Carte Interactive</span>
+</a>
+<a class="px-4 py-1.5 rounded-lg font-display text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition-all flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-base text-slate-400">local_shipping</span>
+<span>Groupage &amp; Fret</span>
+</a>
+<a class="px-4 py-1.5 rounded-lg font-display text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition-all flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-base text-slate-400">agriculture</span>
+<span>Réseau Coopératives</span>
+</a>
+<a class="px-4 py-1.5 rounded-lg font-display text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition-all flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-base text-slate-400">eco</span>
+<span>Indicateurs ESG</span>
+</a>
+</nav>
+<!-- Right: NLU Status, Notifications & Profile -->
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-light opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-mid"></span>
+</span>
+<span class="text-xs font-semibold text-emerald-deep">Darija NLU v4.2 Connecté</span>
+</div>
+<button class="relative p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-colors" title="Notifications" type="button">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-terracotta-vibrant ring-2 ring-white"></span>
+</button>
+<div class="flex items-center gap-3 pl-2 border-l border-slate-200">
+<div class="relative">
+<img alt="Yassine El Amrani" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-deep/20 shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1WWwjbk3ImwR0wxjHB1gosKt3gWJ1w3Fip8QLHKoSG2QS_eC01l9tDTqnNsEYXZSzydaYNkBonwkMXlzLfx2H2PS3ZtLSWO6mslvVp5qo23exygXKOCBg8SdscLUJbC2-DLBc_sO-lLpY8bKe5kpYoxA6JtG93QEX3VIujzxrq5th2Ol5EM9-KrojZ-YFOPtKuctL54iAwwMOVm5n0a1NK_5VIpu6AJ56mpk9yieWU5ew"/>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-light rounded-full ring-2 ring-white"></span>
+</div>
+<div class="hidden xl:flex flex-col text-left">
+<span class="font-display text-xs font-bold text-slate-900 leading-tight">Yassine El Amrani</span>
+<span class="text-[11px] text-slate-500 font-medium">Chef Logistique Régionale</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN OPERATIONAL WORKSPACE (SPLIT SCREEN LAYOUT) -->
+<div class="flex-1 flex overflow-hidden relative">
+<!-- LEFT PANEL: VOICE-FIRST HERO & ESG METRICS COCKPIT -->
+<aside class="w-[460px] 2xl:w-[490px] h-full shrink-0 bg-white border-r border-slate-200/90 z-20 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] overflow-y-auto">
+<div class="p-5 sm:p-6 flex flex-col gap-5">
+<!-- SECTION 1: VOICE-FIRST HERO CARD -->
+<div class="relative rounded-2xl bg-gradient-to-br from-emerald-soft/90 via-white to-emerald-50/50 border border-emerald-deep/20 p-5 shadow-sm overflow-hidden">
+<!-- Background Ambient Glow -->
+<div class="absolute -top-12 -right-12 w-44 h-44 bg-emerald-light/15 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Card Header -->
+<div class="flex items-center justify-between relative z-10 mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-3 h-3 rounded-full bg-emerald-deep flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+</div>
+<h2 class="font-display font-extrabold text-base text-slate-900 tracking-tight">
+                Saisie Vocale Darija
+              </h2>
+</div>
+<div class="flex items-center gap-1.5 bg-emerald-deep/10 border border-emerald-deep/20 px-2.5 py-0.5 rounded-full text-emerald-deep">
+<span class="material-symbols-outlined text-xs">graphic_eq</span>
+<span class="text-[11px] font-display font-bold uppercase tracking-wider">AI Agro-NLU</span>
+</div>
+</div>
+<!-- Prominent Magnetic Mic Hero & Waveform Section -->
+<div class="flex items-center gap-5 p-4 rounded-xl bg-white/90 border border-emerald-deep/15 shadow-sm relative z-10">
+<!-- Magnetic Mic Button with Multi-Ring Pulse -->
+<div class="relative shrink-0 flex items-center justify-center">
+<div class="absolute -inset-2.5 rounded-full bg-emerald-light/30 animate-pulse-ring pointer-events-none"></div>
+<div class="absolute -inset-1 rounded-full bg-emerald-deep/20 animate-ping opacity-50 pointer-events-none"></div>
+<button class="relative z-10 w-16 h-16 rounded-full bg-emerald-deep hover:bg-emerald-mid active:scale-95 text-white flex items-center justify-center shadow-lg shadow-emerald-deep/30 transition-all duration-300 group cursor-pointer" id="mainMicBtn" title="Enregistrer en Darija" type="button">
+<span class="material-symbols-outlined text-3xl transition-transform group-hover:scale-110">mic</span>
+</button>
+</div>
+<!-- Voice Status & Active Frequency Waveform -->
+<div class="flex-1 flex flex-col justify-center min-w-0">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-bold font-display text-emerald-deep flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-light animate-pulse"></span>
+                  Micro actif • Écoute en Darija
+                </span>
+<span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">LIVE REC</span>
+</div>
+<p class="text-xs text-slate-500 mb-2 truncate">Dialecte Souss (Chtouka, Massa, Taroudant)</p>
+<!-- Frequency Signal Waveform Visualizer -->
+<div class="flex items-center gap-1 h-7 px-3 py-1 bg-emerald-50/80 rounded-lg border border-emerald-100">
+<span class="wave-bar w-1 bg-emerald-mid rounded-full"></span>
+<span class="wave-bar w-1 bg-emerald-light rounded-full"></span>
+<span class="wave-bar w-1.5 bg-emerald-deep rounded-full"></span>
+<span class="wave-bar w-1 bg-terracotta-vibrant rounded-full"></span>
+<span class="wave-bar w-1.5 bg-emerald-mid rounded-full"></span>
+<span class="wave-bar w-1 bg-emerald-light rounded-full"></span>
+<span class="wave-bar w-1 bg-emerald-deep rounded-full"></span>
+<span class="wave-bar w-1 bg-emerald-light rounded-full"></span>
+<span class="wave-bar w-1.5 bg-emerald-mid rounded-full"></span>
+<span class="wave-bar w-1 bg-slate-400 rounded-full"></span>
+<span class="text-[10px] font-mono text-emerald-deep font-semibold ml-auto">98.4% Confidence</span>
+</div>
+</div>
+</div>
+<!-- Darija Transcription & Translation Dual Card -->
+<div class="mt-4 rounded-xl bg-white border border-slate-200/90 p-4 shadow-sm relative z-10 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-display font-bold uppercase tracking-wider text-slate-500">Transcription directe (NLU v4.2)</span>
+<span class="text-[11px] font-semibold text-emerald-deep bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> Précision 98.4%
+              </span>
+</div>
+<!-- Arabic Darija Quote -->
+<div class="bg-slate-50 p-3 rounded-lg border border-slate-200/70" dir="rtl">
+<p class="font-arabic text-lg font-bold text-slate-900 leading-relaxed text-right">
+                "عندي جوج طن ديال ماطيشة فبلفاع باغي ندخلها لمارشي إنزكان مع العشية"
+              </p>
+</div>
+<!-- French Translation -->
+<div class="flex items-start gap-2 text-xs text-slate-600 bg-emerald-50/50 p-2.5 rounded-lg border border-emerald-100/60">
+<span class="material-symbols-outlined text-emerald-mid text-sm shrink-0 mt-0.5">translate</span>
+<p class="italic font-medium leading-normal">
+                « J'ai 2 tonnes de tomates à Belfaa que je veux livrer au marché d'Inezgane cet après-midi. »
+              </p>
+</div>
+<!-- Extracted Entity Chips -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="bg-emerald-soft text-emerald-deep border border-emerald-200/80 text-[11px] font-bold px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">eco</span> Tomates 2.0t (Lots #849)
+              </span>
+<span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">pin_drop</span> Origine: Belfaa
+              </span>
+<span class="bg-terracotta-light text-terracotta-deep border border-terracotta/20 text-[11px] font-bold px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">store</span> Inezgane Gros
+              </span>
+<span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">schedule</span> Départ: &lt; 16h30
+              </span>
+</div>
+</div>
+<!-- Interactive Darija Preset Prompt Chips -->
+<div class="mt-4 pt-1">
+<div class="text-[11px] font-display font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center justify-between">
+<span>Commandes Fréquentes Fellahs</span>
+<span class="text-[10px] text-emerald-deep font-semibold">1-Clic Simulation</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="preset-pill group px-3 py-2 rounded-xl bg-white hover:bg-emerald-deep hover:text-white border border-slate-200 text-xs font-semibold text-slate-700 transition-all text-left flex items-center justify-between shadow-xs cursor-pointer" type="button">
+<span>+ 2t Carotte Massa</span>
+<span class="material-symbols-outlined text-xs text-slate-400 group-hover:text-white">add_circle</span>
+</button>
+<button class="preset-pill group px-3 py-2 rounded-xl bg-emerald-deep text-white border border-emerald-deep text-xs font-bold transition-all text-left flex items-center justify-between shadow-sm cursor-pointer ring-2 ring-emerald-glow/40" type="button">
+<span>+ 3.5t Tomate Belfaa</span>
+<span class="material-symbols-outlined text-xs text-emerald-glow">check_circle</span>
+</button>
+<button class="preset-pill group px-3 py-2 rounded-xl bg-white hover:bg-emerald-deep hover:text-white border border-slate-200 text-xs font-semibold text-slate-700 transition-all text-left flex items-center justify-between shadow-xs cursor-pointer" type="button">
+<span>+ 1.8t Agrumes Taroudant</span>
+<span class="material-symbols-outlined text-xs text-slate-400 group-hover:text-white">add_circle</span>
+</button>
+<button class="preset-pill group px-3 py-2 rounded-xl bg-white hover:bg-emerald-deep hover:text-white border border-slate-200 text-xs font-semibold text-slate-700 transition-all text-left flex items-center justify-between shadow-xs cursor-pointer" type="button">
+<span>+ 4t Primeurs Oulad Teima</span>
+<span class="material-symbols-outlined text-xs text-slate-400 group-hover:text-white">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- SECTION 2: 3 HIGH-CONTRAST STAT / METRIC CARDS (CLIMATE & VALUE) -->
+<div>
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-display font-bold text-sm text-slate-900 tracking-tight flex items-center gap-1.5">
+<span class="material-symbols-outlined text-emerald-mid text-lg">insights</span>
+              Impact Territorial &amp; Climat Souss-Massa
+            </h3>
+<span class="text-[11px] font-bold text-emerald-deep bg-emerald-100/80 px-2 py-0.5 rounded-full">Aujourd'hui</span>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<!-- Card 1: CO2 Evité -->
+<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:border-emerald-deep/40 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">CO₂ Évité</span>
+<div class="w-7 h-7 rounded-lg bg-emerald-soft text-emerald-deep flex items-center justify-center">
+<span class="material-symbols-outlined text-base">eco</span>
+</div>
+</div>
+<div class="font-display text-xl 2xl:text-2xl font-extrabold text-emerald-deep tracking-tight">3,840 kg</div>
+</div>
+<div class="mt-2.5 pt-2 border-t border-slate-100">
+<div class="flex items-center gap-1 text-[11px] font-bold text-emerald-mid">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+18% vs solo</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden">
+<div class="bg-emerald-mid h-1.5 rounded-full" style="width: 78%"></div>
+</div>
+</div>
+</div>
+<!-- Card 2: Tonnage Regroupé -->
+<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:border-slate-300 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Tonnage</span>
+<div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-base">local_shipping</span>
+</div>
+</div>
+<div class="font-display text-xl 2xl:text-2xl font-extrabold text-slate-900 tracking-tight">142.8 t</div>
+</div>
+<div class="mt-2.5 pt-2 border-t border-slate-100">
+<div class="text-[11px] font-semibold text-slate-600">48 lots consolidés</div>
+<div class="text-[10px] text-slate-400">16 camions optimisés</div>
+</div>
+</div>
+<!-- Card 3: Marge Agriculteur -->
+<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:border-terracotta/40 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Marge Fellah</span>
+<div class="w-7 h-7 rounded-lg bg-terracotta-light text-terracotta-vibrant flex items-center justify-center">
+<span class="material-symbols-outlined text-base">payments</span>
+</div>
+</div>
+<div class="font-display text-xl 2xl:text-2xl font-extrabold text-terracotta-vibrant tracking-tight">+32%</div>
+</div>
+<div class="mt-2.5 pt-2 border-t border-slate-100">
+<div class="text-[11px] font-bold text-slate-800">Gain Net Moyen</div>
+<div class="text-[10px] font-medium text-emerald-deep">420 MAD/expéd.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: OPTIMIZER & COMPILATION TRIGGER -->
+<div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-terracotta text-lg">alt_route</span>
+<span class="font-display font-bold text-sm text-slate-900">Moteur de Groupage Dynamique</span>
+</div>
+<span class="text-[10px] font-bold text-emerald-deep bg-emerald-100 px-2 py-0.5 rounded-full">Prêt pour consolidation</span>
+</div>
+<div class="flex items-center justify-between text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+<div>
+<span class="text-slate-500 block">Flotte Allouée</span>
+<span class="font-bold text-slate-900 font-display">3 Camions 10t combinés</span>
+</div>
+<div class="text-right">
+<span class="text-slate-500 block">Remplissage Flotte</span>
+<span class="font-bold text-emerald-deep font-display text-sm">94% (+28% gain)</span>
+</div>
+</div>
+<!-- Terracotta Primary Action Trigger Button -->
+<button class="w-full py-3.5 px-5 rounded-xl bg-terracotta hover:bg-terracotta-vibrant active:scale-[0.99] text-white font-display font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-terracotta/25 hover:shadow-lg hover:shadow-terracotta/35 transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-lg">alt_route</span>
+<span>Compiler les Lots Groupés (Souss-Massa)</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- RIGHT PANEL: FULL-BLEED INTERACTIVE MAP AREA WITH OVERLAYS -->
+<main class="flex-1 h-full relative overflow-hidden bg-slate-100">
+<!-- CARTOGRAPHIC SVG VECTOR MAP (SOUSS-MASSA REGION) -->
+<div class="absolute inset-0 bg-[#e6ede8] transition-colors duration-300" id="mapViewport">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Ocean Gradient -->
+<lineargradient id="oceanGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#b8e2f8"></stop>
+<stop offset="100%" stop-color="#93c5fd"></stop>
+</lineargradient>
+<!-- Active Groupage Route Gradient -->
+<lineargradient id="groupageFlow" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#065f46"></stop>
+<stop offset="50%" stop-color="#ea580c"></stop>
+<stop offset="100%" stop-color="#047857"></stop>
+</lineargradient>
+<!-- Map Grid Pattern -->
+<pattern height="60" id="topoGrid" patternunits="userSpaceOnUse" width="60">
+<path d="M 60 0 L 0 0 0 60" fill="none" opacity="0.6" stroke="#cbd5e1" stroke-width="0.75"></path>
+</pattern>
+</defs>
+<!-- Topographic Background Grid -->
+<rect fill="url(#topoGrid)" height="100%" width="100%"></rect>
+<!-- Atlantic Ocean (West Coast) -->
+<path d="M 0,0 L 280,0 Q 240,240 210,480 T 150,800 L 0,800 Z" fill="url(#oceanGradient)"></path>
+<path d="M 280,0 Q 240,240 210,480 T 150,800" fill="none" opacity="0.8" stroke="#60a5fa" stroke-width="2.5"></path>
+<!-- Agricultural Green Zones (Chtouka Aït Baha & Massa Estuary) -->
+<!-- Chtouka Farmlands -->
+<path d="M 330,340 C 380,290 560,310 610,420 C 650,540 540,680 390,660 C 310,630 280,440 330,340 Z" fill="#bbf7d0" opacity="0.45"></path>
+<!-- Massa Reserve & Organic basin -->
+<path d="M 320,620 C 420,590 540,640 520,760 C 440,820 340,800 290,730 Z" fill="#86efac" opacity="0.4"></path>
+<!-- Taroudant Souss Valley Plains -->
+<path d="M 640,180 C 780,140 1020,160 1120,280 C 1050,380 880,390 730,340 Z" fill="#fef08a" opacity="0.35"></path>
+<!-- Arterial Road Infrastructure (N1, N10, Express corridors) -->
+<!-- Route N1: Agadir -> Inezgane -> Belfaa -> Massa -->
+<path d="M 380,180 L 400,280 L 430,420 L 460,560 L 430,710" fill="none" id="route-n1" stroke="#94a3b8" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"></path>
+<path d="M 380,180 L 400,280 L 430,420 L 460,560 L 430,710" fill="none" stroke="#ffffff" stroke-dasharray="8 6" stroke-width="2.5"></path>
+<!-- Route N10: Inezgane -> Ouled Teima -> Taroudant Corridor -->
+<path d="M 400,280 L 560,265 L 750,250 L 980,230" fill="none" id="route-n10" stroke="#94a3b8" stroke-linecap="round" stroke-width="7"></path>
+<path d="M 400,280 L 560,265 L 750,250 L 980,230" fill="none" stroke="#ffffff" stroke-dasharray="8 6" stroke-width="2.5"></path>
+<!-- Secondary Link: Biougra Connector -->
+<path d="M 430,420 L 560,450 L 750,250" fill="none" stroke="#cbd5e1" stroke-dasharray="5 5" stroke-width="4"></path>
+<!-- LIVE GROUPAGE FLOW SIMULATIONS (Animated SVG routes) -->
+<!-- Active Flow: Belfaa Consolidation -> Hub Inezgane -->
+<path class="opacity-90" d="M 460,560 Q 425,410 400,280" fill="none" stroke="url(#groupageFlow)" stroke-linecap="round" stroke-width="5"></path>
+<circle cx="435" cy="430" fill="#ea580c" r="5">
+<animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.3;1;0.3"></animate>
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="4;6.5;4"></animate>
+</circle>
+<!-- Active Flow: Taroudant/Ouled Teima -> Inezgane -->
+<path d="M 750,250 L 400,280" fill="none" stroke="#059669" stroke-dasharray="10 5" stroke-width="3.5">
+<animate attributename="stroke-dashoffset" dur="2.5s" repeatcount="indefinite" values="30;0"></animate>
+</path>
+<!-- River Estuary Accents -->
+<path d="M 230,290 Q 320,295 400,280" fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="4"></path>
+<text fill="#0369a1" font-size="11" font-weight="700" letter-spacing="1" x="250" y="275">OUED SOUSS</text>
+<path d="M 180,690 Q 280,695 430,710" fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="3.5"></path>
+<text fill="#0369a1" font-size="11" font-weight="700" letter-spacing="1" x="210" y="675">OUED MASSA</text>
+</svg>
+</div>
+<!-- MAP CONTROLS & HUD HEADER (TOP FLOATING BAR) -->
+<div class="absolute top-5 left-6 right-6 flex items-center justify-between pointer-events-none z-30">
+<!-- Filter Layer Tabs -->
+<div class="flex items-center gap-1.5 p-1.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg pointer-events-auto">
+<button class="px-3.5 py-1.5 rounded-xl bg-emerald-deep text-white font-display text-xs font-bold flex items-center gap-1.5 shadow-sm cursor-pointer" type="button">
+<span class="material-symbols-outlined text-sm">tune</span>
+<span>Tous les Flux (61)</span>
+</button>
+<button class="px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700 font-display text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer" type="button">
+<span class="w-2 h-2 rounded-full bg-emerald-mid"></span>
+<span>Maraîchage Chtouka (38)</span>
+</button>
+<button class="px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700 font-display text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer" type="button">
+<span class="w-2 h-2 rounded-full bg-terracotta-vibrant"></span>
+<span>Agrumes Taroudant (14)</span>
+</button>
+<button class="px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700 font-display text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-sm text-cyan-600">ac_unit</span>
+<span>Frigo 10t &amp; 20t (9)</span>
+</button>
+</div>
+<!-- Telemetry, Map Style Toggle & Zoom Controls -->
+<div class="flex items-center gap-3 pointer-events-auto">
+<!-- Traffic & Weather Info -->
+<div class="hidden xl:flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg text-xs font-semibold text-slate-700">
+<span class="flex items-center gap-1 text-emerald-deep font-bold">
+<span class="material-symbols-outlined text-base">traffic</span> R105 Fluide
+            </span>
+<span class="text-slate-300">•</span>
+<span class="flex items-center gap-1 text-terracotta">
+<span class="material-symbols-outlined text-base">thermostat</span> Temp. +19°C
+            </span>
+</div>
+<!-- Dark / Light Map Style Toggle -->
+<button class="px-3 py-1.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg text-slate-700 hover:text-slate-900 font-display text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer" id="mapStyleBtn" title="Basculer le style de carte" type="button">
+<span class="material-symbols-outlined text-sm">light_mode</span>
+<span>Mode Clair</span>
+</button>
+<!-- Zoom In / Out / Layers -->
+<div class="flex items-center bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg rounded-2xl p-1 gap-1">
+<button class="w-8 h-8 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center justify-center transition-colors" title="Zoomer" type="button">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+<button class="w-8 h-8 rounded-xl hover:bg-slate-100 text-slate-700 flex items-center justify-center transition-colors" title="Dézoomer" type="button">
+<span class="material-symbols-outlined text-lg">remove</span>
+</button>
+<button class="w-8 h-8 rounded-xl hover:bg-slate-100 text-emerald-deep flex items-center justify-center transition-colors" title="Réinitialiser vue" type="button">
+<span class="material-symbols-outlined text-lg">center_focus_strong</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CUSTOM MAP MARKERS -->
+<!-- PIN 1: AGADIR PORT ATLANTIQUE (Port Maritime) -->
+<div class="absolute top-[180px] left-[320px] flex flex-col items-center pointer-events-auto cursor-pointer group z-10">
+<span class="px-2 py-0.5 rounded-md bg-white/90 border border-slate-200 text-[10px] font-bold text-slate-600 mb-1 shadow-xs group-hover:text-emerald-deep">Port Agadir Export</span>
+<div class="w-7 h-7 rounded-full bg-slate-800 text-white flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-sm">anchor</span>
+</div>
+</div>
+<!-- PIN 2: INEZGANE WHOLESALE MARKET (CENTRAL FREIGHT CONSOLIDATION HUB - TERRACOTTA) -->
+<div class="absolute top-[260px] left-[380px] flex flex-col items-center pointer-events-auto cursor-pointer z-20">
+<div class="flex items-center gap-1 px-3 py-1 rounded-full bg-terracotta text-white font-display text-xs font-bold shadow-lg shadow-terracotta/30 mb-1">
+<span class="material-symbols-outlined text-xs">warehouse</span>
+<span>Marché de Gros Inezgane</span>
+</div>
+<div class="relative flex items-center justify-center">
+<div class="absolute -inset-2.5 rounded-full bg-terracotta-vibrant/30 animate-ping"></div>
+<div class="w-10 h-10 rounded-full bg-terracotta text-white flex items-center justify-center shadow-xl ring-4 ring-white">
+<span class="material-symbols-outlined text-xl">hub</span>
+</div>
+</div>
+<span class="mt-1 px-2 py-0.5 rounded-full bg-white text-terracotta-deep font-bold text-[10px] shadow-sm border border-terracotta/30">Hub Central • 92%</span>
+</div>
+<!-- PIN 3: AÏT MELLOUL COLD STORAGE (Hub Frigorifique) -->
+<div class="absolute top-[340px] left-[400px] flex flex-col items-center pointer-events-auto cursor-pointer z-10">
+<div class="w-8 h-8 rounded-full bg-cyan-600 text-white flex items-center justify-center shadow-md ring-2 ring-white hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-base">ac_unit</span>
+</div>
+<span class="mt-1 px-2 py-0.5 rounded bg-white text-[10px] font-bold text-slate-700 shadow-xs border border-slate-200">Aït Melloul Frigo</span>
+</div>
+<!-- PIN 4: BIOUGRA FARMS (EMERALD PIN WITH CROP GLYPH) -->
+<div class="absolute top-[420px] left-[550px] flex flex-col items-center pointer-events-auto cursor-pointer group z-10">
+<div class="w-8 h-8 rounded-full bg-emerald-deep text-white flex items-center justify-center shadow-md ring-2 ring-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-base">psychiatry</span>
+</div>
+<div class="mt-1 px-2 py-0.5 rounded bg-white text-[10px] font-bold text-slate-800 shadow-xs border border-slate-200">Biougra Primeurs</div>
+<span class="text-[9px] font-semibold text-emerald-deep">1,800 kg poivrons</span>
+</div>
+<!-- PIN 5: OULED TEIMA AGRUMES -->
+<div class="absolute top-[240px] left-[730px] flex flex-col items-center pointer-events-auto cursor-pointer group z-10">
+<div class="w-8 h-8 rounded-full bg-terracotta-vibrant text-white flex items-center justify-center shadow-md ring-2 ring-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-base">nutrition</span>
+</div>
+<div class="mt-1 px-2 py-0.5 rounded bg-white text-[10px] font-bold text-slate-800 shadow-xs border border-slate-200">Ouled Teima Agrumes</div>
+<span class="text-[9px] font-bold text-terracotta-deep">4,100 kg clémentines</span>
+</div>
+<!-- PIN 6: MASSA BIO BASIN -->
+<div class="absolute top-[680px] left-[420px] flex flex-col items-center pointer-events-auto cursor-pointer group z-10">
+<div class="w-8 h-8 rounded-full bg-emerald-mid text-white flex items-center justify-center shadow-md ring-2 ring-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-base">compost</span>
+</div>
+<div class="mt-1 px-2 py-0.5 rounded bg-white text-[10px] font-bold text-slate-800 shadow-xs border border-slate-200">Massa Bio</div>
+<span class="text-[9px] font-semibold text-slate-500">2,200 kg carottes</span>
+</div>
+<!-- PIN 7 & RICH GLASSMORPHISM FLOATING POPUP: BELFAA (ACTIVE SELECTION) -->
+<div class="absolute top-[510px] left-[440px] z-30 pointer-events-auto">
+<!-- Emerald Target Marker Pin -->
+<div class="flex flex-col items-center cursor-pointer">
+<div class="relative flex items-center justify-center">
+<div class="absolute -inset-3 rounded-full bg-emerald-light/40 animate-ping"></div>
+<div class="w-11 h-11 rounded-full bg-emerald-deep text-white flex items-center justify-center shadow-2xl ring-4 ring-white">
+<span class="material-symbols-outlined text-2xl">spa</span>
+</div>
+</div>
+<span class="mt-1 px-2.5 py-0.5 rounded-full bg-emerald-deep text-white font-display text-[11px] font-bold shadow-md">
+            Belfaa Lot #849
+          </span>
+</div>
+<!-- HIGH-CONVERTING GLASSMORPHISM FLOATING POPUP MODAL -->
+<div class="absolute bottom-[64px] -left-36 sm:-left-44 w-[380px] sm:w-[420px] rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-2xl p-5 flex flex-col gap-4 text-slate-800 animate-in fade-in zoom-in-95 duration-200">
+<!-- Header: Crop Type & Status Badge -->
+<div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
+<div>
+<div class="flex items-center gap-1 text-[11px] font-display font-bold uppercase tracking-wider text-terracotta mb-0.5">
+<span class="material-symbols-outlined text-xs">local_shipping</span>
+<span>Départ Groupé Programmé</span>
+</div>
+<h4 class="font-display font-black text-lg text-slate-900 leading-tight">
+                Tomates Rondes Chtouka
+              </h4>
+</div>
+<span class="bg-emerald-soft border border-emerald-deep/20 text-emerald-deep font-display font-bold text-xs px-2.5 py-1 rounded-full shrink-0 flex items-center gap-1 shadow-xs">
+<span class="w-2 h-2 rounded-full bg-emerald-mid animate-pulse"></span>
+              Lot Confirmé
+            </span>
+</div>
+<!-- Volume & Farmer Identification -->
+<div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-emerald-deep text-white font-display font-bold text-sm flex items-center justify-center shadow-sm">
+                HB
+              </div>
+<div class="flex flex-col">
+<span class="font-display text-xs font-bold text-slate-900">Hadj Brahim Aït Oumghar</span>
+<span class="text-[11px] text-slate-500">Coopérative Al Baraka • Belfaa (Zone 3)</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[10px] uppercase font-bold text-slate-400 block">Volume</span>
+<span class="font-display font-extrabold text-base text-emerald-deep">3,500 kg</span>
+</div>
+</div>
+<!-- Darija Voice Snippet Transcription Quote -->
+<div class="bg-amber-50/70 border border-amber-200/70 rounded-xl p-3 flex flex-col gap-1">
+<div class="flex items-center justify-between text-[11px] font-bold text-amber-900">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-terracotta-vibrant">voice_chat</span>
+                Message Vocal Darija (Fellah)
+              </span>
+<span class="text-[10px] text-amber-700">14:02 Aujourd'hui</span>
+</div>
+<p class="font-arabic text-base font-bold text-slate-900 text-right leading-relaxed" dir="rtl">
+              "السلعة واجدة دابا فالصناديق، بغينا الكاميو يزها قبل 16:30"
+            </p>
+<p class="text-[11px] text-slate-600 italic">
+              « Marchandise emballée prête en caisses, camion requis avant 16h30. »
+            </p>
+</div>
+<!-- Price Comparison: Individual vs WASLA Groupé -->
+<div class="grid grid-cols-2 gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+<div class="flex flex-col justify-center">
+<span class="text-[10px] uppercase font-bold text-slate-400">Transport Individuel</span>
+<span class="font-display text-base font-bold text-slate-400 line-through">0.35 MAD</span>
+<span class="text-[10px] text-slate-500">par kg transporté</span>
+</div>
+<div class="flex flex-col justify-center bg-white p-2 rounded-lg border border-emerald-200 shadow-xs">
+<span class="text-[10px] uppercase font-bold text-emerald-deep flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">savings</span> WASLA Groupé
+              </span>
+<div class="flex items-baseline gap-1">
+<span class="font-display text-xl font-black text-emerald-deep">0.18</span>
+<span class="text-xs font-bold text-slate-700">MAD/kg</span>
+</div>
+<span class="text-[11px] font-bold text-emerald-mid">-48% Économisé</span>
+</div>
+</div>
+<!-- Routing Timeline -->
+<div class="flex items-center justify-between text-xs px-2 pt-0.5 text-slate-600">
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-slate-400">Départ Belfaa</span>
+<span class="font-bold text-terracotta">16:30</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 text-sm">arrow_forward</span>
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-slate-400">Hub Frigo Melloul</span>
+<span class="font-semibold text-slate-700">17:15</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 text-sm">arrow_forward</span>
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-slate-400">Marché Inezgane</span>
+<span class="font-bold text-emerald-deep">18:15</span>
+</div>
+</div>
+<!-- Direct CTAs: WhatsApp Fellah & Valider Lot Groupé -->
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<button class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-display font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-emerald-deep text-base">chat</span>
+<span>WhatsApp Fellah</span>
+</button>
+<button class="py-2.5 px-3 rounded-xl bg-emerald-deep hover:bg-emerald-mid text-white font-display font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-deep/30 transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span>Valider Lot Groupé</span>
+</button>
+</div>
+</div>
+</div>
+<!-- BOTTOM FLOATING REGIONAL COURIER TRAY -->
+<div class="absolute bottom-5 left-6 right-6 z-20 pointer-events-none">
+<div class="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 p-3.5 px-5 shadow-xl flex items-center justify-between pointer-events-auto gap-4">
+<div class="flex items-center gap-3.5 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-emerald-deep text-white flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-xl">route</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-[10px] font-display font-bold uppercase tracking-wider text-emerald-deep">Couloir Express Prioritaire Souss</span>
+<span class="font-display font-bold text-xs sm:text-sm text-slate-900 truncate">
+                Belfaa &amp; Biougra ➔ Hub Aït Melloul ➔ Marché de Gros Inezgane
+              </span>
+</div>
+</div>
+<div class="hidden lg:flex items-center gap-6 shrink-0 border-x border-slate-200 px-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-lg">schedule</span>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 uppercase font-semibold">Transit Moyen</span>
+<span class="font-display font-bold text-xs text-slate-800">1h 15min</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cyan-600 text-lg">ac_unit</span>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 uppercase font-semibold">Chaîne du Froid</span>
+<span class="font-display font-bold text-xs text-slate-800">+8°C Garanti</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-mid text-lg">savings</span>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 uppercase font-semibold">Économie Globale</span>
+<span class="font-display font-extrabold text-xs text-emerald-deep">26,880 MAD/j</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-display text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-sm">print</span>
+<span class="hidden sm:inline">Bordereaux Darija</span>
+</button>
+<button class="py-2 px-4 rounded-xl bg-terracotta hover:bg-terracotta-vibrant text-white font-display text-xs font-bold flex items-center gap-1.5 shadow-sm shadow-terracotta/30 transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-sm">send</span>
+<span>Départ Flotte 16:30</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- INTERACTIVE LOGIC (PROMPTS & MIC TOGGLE & MAP STYLE) -->
+<script>
+    // Prompt Chips interaction
+    document.querySelectorAll('.preset-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-pill').forEach(b => {
+          b.classList.remove('bg-emerald-deep', 'text-white', 'border-emerald-deep', 'ring-2', 'ring-emerald-glow/40');
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+          const icon = b.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = 'add_circle';
+            icon.classList.remove('text-emerald-glow');
+            icon.classList.add('text-slate-400');
+          }
+        });
+
+        btn.classList.remove('bg-white', 'text-slate-700', 'border-slate-200');
+        btn.classList.add('bg-emerald-deep', 'text-white', 'border-emerald-deep', 'ring-2', 'ring-emerald-glow/40');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) {
+          icon.textContent = 'check_circle';
+          icon.classList.remove('text-slate-400');
+          icon.classList.add('text-emerald-glow');
+        }
+      });
+    });
+
+    // Mic Button pulse toggle
+    const micBtn = document.getElementById('mainMicBtn');
+    if (micBtn) {
+      let listening = true;
+      micBtn.addEventListener('click', () => {
+        listening = !listening;
+        if (listening) {
+          micBtn.classList.remove('bg-slate-700');
+          micBtn.classList.add('bg-emerald-deep');
+        } else {
+          micBtn.classList.remove('bg-emerald-deep');
+          micBtn.classList.add('bg-slate-700');
+        }
+      });
+    }
+
+    // Map style button toggle (Dark / Light mode simulation)
+    const mapStyleBtn = document.getElementById('mapStyleBtn');
+    const mapViewport = document.getElementById('mapViewport');
+    let isLight = true;
+
+    if (mapStyleBtn && mapViewport) {
+      mapStyleBtn.addEventListener('click', () => {
+        isLight = !isLight;
+        if (!isLight) {
+          mapViewport.classList.remove('bg-[#e6ede8]');
+          mapViewport.classList.add('bg-[#1e293b]');
+          mapStyleBtn.innerHTML = '<span class="material-symbols-outlined text-sm">dark_mode</span><span>Mode Sombre</span>';
+        } else {
+          mapViewport.classList.remove('bg-[#1e293b]');
+          mapViewport.classList.add('bg-[#e6ede8]');
+          mapStyleBtn.innerHTML = '<span class="material-symbols-outlined text-sm">light_mode</span><span>Mode Clair</span>';
+        }
+      });
+    }
+  </script>
+</body></html>
