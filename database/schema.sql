@@ -85,12 +85,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- -----------------------------------------------------
 -- Seed Data for Communes
--- Core 6 communes of interest in Souss-Massa region
+-- Core national hubs in Morocco
 -- -----------------------------------------------------
 INSERT INTO `communes` (`nom`, `latitude`, `longitude`) VALUES
-('Tiznit', 29.69750000, -9.73170000),
-('Inezgane', 30.36580000, -9.53810000),
-('Taroudant', 30.47030000, -8.87700000),
-('Oulad Teima', 30.39580000, -9.20840000),
-('Belfaa', 30.04140000, -9.56390000),
-('Massa', 30.00780000, -9.63810000);
+('Casablanca', 33.57310000, -7.58980000),
+('Meknès', 33.87300000, -5.54070000),
+('Berkane', 34.92130000, -2.32750000),
+('Agadir', 30.42780000, -9.59810000);

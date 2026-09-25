@@ -714,18 +714,11 @@
     <!-- Leaflet JS Map Script -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        // Souss-Massa Core Communes Seed Coordinates
-        const communesData = [
-            { id: 1, name: "Tiznit", lat: 29.6975, lon: -9.7317 },
-            { id: 2, name: "Inezgane", lat: 30.3658, lon: -9.5381 },
-            { id: 3, name: "Taroudant", lat: 30.4703, lon: -8.8770 },
-            { id: 4, name: "Oulad Teima", lat: 30.3958, lon: -9.2084 },
-            { id: 5, name: "Belfaa", lat: 30.0414, lon: -9.5639 },
-            { id: 6, name: "Massa", lat: 30.0078, lon: -9.6381 }
-        ];
+        let communesData = [];
+        let coopHubs = [];
 
-        // Map Center point (Souss-Massa Region Centroid)
-        const regionCentroid = [30.2, -9.3];
+        // Map Center point (Morocco Centroid)
+        const regionCentroid = [31.7917, -7.0926];
         let map;
         let markersGroup;
 
@@ -734,7 +727,7 @@
             // Setup Leaflet Map without default zoom control (z-index managed relative to z-15)
             map = L.map('map', {
                 center: regionCentroid,
-                zoom: 9,
+                zoom: 6,
                 zoomControl: false
             });
 
@@ -746,8 +739,22 @@
 
             markersGroup = L.layerGroup().addTo(map);
 
-            // Render local communes in the Left Panel and Map
-            renderCommunes();
+            // Fetch dynamic hubs
+            fetch('../api/get_hubs.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        communesData = data.communesData;
+                        coopHubs = data.coopHubs;
+                        renderCommunes();
+                        if (activeTab === 'coop' && coopLayer) {
+                            getCoopLayer().clearLayers();
+                            coopLayer = null; // force recreation
+                            switchMapTab('coop');
+                        }
+                    }
+                })
+                .catch(err => console.error("Error fetching hubs:", err));
         });
 
         // Setup Communes on both panel and map
@@ -1080,15 +1087,6 @@
         // TAB NAVIGATION SYSTEM
         // =============================================================
 
-        // Cooperative hub data — Souss-Massa key nodes
-        const coopHubs = [
-            { id: 'c1', name: 'Coopérative Agadir Hub', lat: 30.4278, lon: -9.5981, members: 128, products: 'Tomates, Courgettes' },
-            { id: 'c2', name: 'Coopérative Chtouka-Aït Baha', lat: 30.0700, lon: -9.4540, members: 94, products: 'Maraîchage primeur' },
-            { id: 'c3', name: 'Coopérative Oulad Teima', lat: 30.3958, lon: -9.2084, members: 67, products: 'Agrumes, Primeurs' },
-            { id: 'c4', name: 'Coopérative Taroudant', lat: 30.4703, lon: -8.8770, members: 81, products: 'Oranges, Citrons' },
-            { id: 'c5', name: 'Hub Groupage Inezgane', lat: 30.3558, lon: -9.5300, members: 212, products: 'Centrale logistique' },
-        ];
-
         let coopLayer = null;     // Layer group for cooperative hubs
         let lotLayer = null;      // Layer group for aggregated lots only
         let activeTab = 'carte'; // Tracks which tab is currently active
@@ -1191,7 +1189,7 @@
                     if (lotLayer && map.hasLayer(lotLayer)) map.removeLayer(lotLayer);
                     const cl = getCoopLayer();
                     if (!map.hasLayer(cl)) map.addLayer(cl);
-                    map.setView([30.25, -9.30], 9, { animate: true, duration: 0.8 });
+                    map.setView(regionCentroid, 6, { animate: true, duration: 0.8 });
                     break;
 
                 case 'esg':
