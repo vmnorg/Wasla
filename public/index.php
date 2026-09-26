@@ -255,9 +255,9 @@
                             <div class="flex items-center justify-between mb-1.5">
                                 <span class="text-xs font-bold font-display text-emerald-deep flex items-center gap-1.5" id="mic-status">
                                     <span class="w-2 h-2 rounded-full bg-emerald-light animate-pulse"></span>
-                                    <span data-i18n="mic_active">Micro actif • Écoute en Darija</span>
+                                    <span>Micro prêt</span>
                                 </span>
-                                <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md" id="mic-rec-badge" data-i18n="live_rec">LIVE REC</span>
+                                <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md" id="mic-rec-badge">PRÊT</span>
                             </div>
                             <p class="text-xs text-slate-500 mb-2 truncate" data-i18n="dialect">Dialecte Souss (Chtouka, Massa, Taroudant)</p>
                             
@@ -273,7 +273,7 @@
                                 <span class="wave-bar w-1 bg-emerald-light rounded-full"></span>
                                 <span class="wave-bar w-1.5 bg-emerald-mid rounded-full"></span>
                                 <span class="wave-bar w-1 bg-slate-400 rounded-full"></span>
-                                <span class="text-[10px] font-mono text-emerald-deep font-semibold ml-auto">98.4% Confidence</span>
+                                <span class="text-[10px] font-mono text-emerald-deep font-semibold ml-auto">Darija · العربية</span>
                             </div>
                         </div>
                     </div>
@@ -284,7 +284,7 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-[11px] font-display font-bold uppercase tracking-wider text-slate-500" data-i18n="saisie_edition">Saisie ou Édition de la Transcription</span>
                                 <span class="text-[11px] font-semibold text-emerald-deep bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-xs">verified</span> <span data-i18n="precision">Précision 98.4%</span>
+                                    <span class="material-symbols-outlined text-xs">edit_note</span> <span>Texte à relire</span>
                                 </span>
                             </div>
                             
@@ -1100,35 +1100,7 @@
             showToast("Simulation: 2 Lots Logistiques créés en Souss-Massa (Massa et Belfaa) avec un total de 13.6 Tonnes consolidées, économisant 1632 kg de CO₂ !", "success");
         }
 
-        // Mic Button pulse toggle interaction
-        const micBtn = document.getElementById('mainMicBtn');
-        const micStatusText = document.getElementById('mic-status');
-        const micRecBadge = document.getElementById('mic-rec-badge');
-        const waveBars = document.querySelectorAll('.wave-bar');
-        let listening = true;
-
-        if (micBtn) {
-          micBtn.addEventListener('click', () => {
-            listening = !listening;
-            if (listening) {
-              micBtn.classList.remove('bg-slate-700', 'shadow-slate-500/30');
-              micBtn.classList.add('bg-emerald-deep', 'shadow-emerald-deep/30');
-              micStatusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-light animate-pulse"></span>Micro actif • Écoute en Darija';
-              micRecBadge.classList.remove('bg-slate-100', 'text-slate-500');
-              micRecBadge.classList.add('bg-slate-100', 'text-red-500');
-              micRecBadge.innerText = 'LIVE REC';
-              waveBars.forEach(bar => bar.style.animationPlayState = 'running');
-            } else {
-              micBtn.classList.remove('bg-emerald-deep', 'shadow-emerald-deep/30');
-              micBtn.classList.add('bg-slate-700', 'shadow-slate-500/30');
-              micStatusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-400"></span>Micro désactivé • En pause';
-              micRecBadge.classList.remove('text-red-500');
-              micRecBadge.classList.add('bg-slate-100', 'text-slate-500');
-              micRecBadge.innerText = 'PAUSÉ';
-              waveBars.forEach(bar => bar.style.animationPlayState = 'paused');
-            }
-          });
-        }
+        // Microphone capture is managed by transcription/ui.js.
 
         // =============================================================
         // TAB NAVIGATION SYSTEM
@@ -1169,9 +1141,6 @@
          * @param {'carte'|'groupage'|'coop'|'esg'} tab
          */
         function switchMapTab(tab) {
-            if (typeof listening !== 'undefined' && listening) { document.getElementById('mainMicBtn').click(); }
-            const recBadge = document.getElementById('mic-rec-badge');
-            if (recBadge) recBadge.classList.add('hidden');
             activeTab = tab;
 
             // 1. Update tab button visual states
@@ -1516,18 +1485,6 @@
                 }
             });
 
-            // Handle Mic specific text updates if currently modified by DOM state
-            const micStatusText = document.getElementById('mic-status');
-            if (micStatusText) {
-                // Determine current mic state (it uses listening variable internally, assume checking class)
-                const isListening = !document.getElementById('mainMicBtn').classList.contains('bg-slate-700');
-                if (isListening) {
-                   micStatusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-light animate-pulse"></span><span data-i18n="mic_active">${translations[lang]['mic_active']}</span>`;
-                } else {
-                   micStatusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-400"></span><span data-i18n="mic_paused">${translations[lang]['mic_paused']}</span>`;
-                }
-            }
-            
             // Document direction and font family updates for Arabic RTL support
             if (lang === 'ar') {
                 document.documentElement.dir = 'rtl';
@@ -1568,5 +1525,6 @@
             to   { opacity: 1; transform: translateY(0)   scale(1);    }
         }
     </style>
+    <script type="module" src="transcription/ui.js"></script>
 </body>
 </html>

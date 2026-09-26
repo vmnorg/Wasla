@@ -1,4 +1,7 @@
 .env
 vendor/
 node_modules/
+api/
+agents/
+config/
 *.zip

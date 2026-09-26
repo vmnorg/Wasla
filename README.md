@@ -1,5 +1,11 @@
 # WASLA - Plateforme Agri-Logistique de Souss-Massa
 
+## Transcription vocale Darija en direct
+
+Le microphone du dashboard utilise désormais un service FastAPI et Gemini Live.
+Consultez [le guide de configuration et de lancement](transcription/README.md).
+Une page autonome est disponible sur `http://localhost:8001` après lancement du service.
+
 WASLA (Moroccan Arabic for "Connection") is a clean-architecture, zero-dependency native PHP & MySQL platform built to optimize logistics, consolidate agricultural crop shipments, and minimize environmental impact in the Souss-Massa agricultural heartland of Morocco.
 
 ---

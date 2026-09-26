@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WASLA · Transcription Darija</title>
+  <link rel="stylesheet" href="/transcription/style.css">
+  <script type="module" src="/transcription/ui.js"></script>
+</head>
+<body>
+  <main>
+    <p class="brand">WASLA / VOIX</p>
+    <h1>Votre voix, en Darija.</h1>
+    <p>Parlez naturellement. Le texte apparaît en arabe et reste modifiable après l’enregistrement.</p>
+    <div class="controls">
+      <button id="mainMicBtn" type="button">Enregistrer</button>
+      <span id="mic-rec-badge">PRÊT</span>
+    </div>
+    <p id="mic-status" role="status"></p>
+    <label for="darija-text">Transcription · النص بالدارجة</label>
+    <textarea id="darija-text" rows="8" lang="ar-MA" dir="rtl" placeholder="هضر بالدارجة، الكلام ديالك غادي يبان هنا…"></textarea>
+    <p class="hint">Relisez les noms, lieux et quantités. La reconnaissance peut faire des erreurs.</p>
+  </main>
+</body>
+</html>

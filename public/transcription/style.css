@@ -1,0 +1,15 @@
+:root { color-scheme: light; --ink: #183b31; --muted: #53665e; --line: #bdcfc5; --paper: #f4f7f3; --accent: #175c44; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 1.5rem; background: var(--paper); color: var(--ink); font: 1rem/1.6 system-ui, sans-serif; }
+main { max-width: 48rem; margin: 3rem auto; }
+.brand { font-size: .75rem; letter-spacing: .15em; font-weight: 700; }
+h1 { font-size: clamp(1.75rem, 5vw, 2.75rem); line-height: 1.15; margin: 1rem 0; }
+p { color: var(--muted); }
+.controls { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1rem; }
+button { color: white; background: var(--accent); border: 0; padding: .75rem 1.5rem; border-radius: .5rem; font: inherit; font-weight: 600; cursor: pointer; min-height: 44px; }
+button:disabled { opacity: .6; cursor: wait; }
+button:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+label { display: block; font-weight: 600; margin: 1.5rem 0 .5rem; }
+textarea { display: block; width: 100%; padding: 1rem; border: 1px solid var(--line); border-radius: .5rem; background: white; color: var(--ink); font: 1.25rem/1.8 system-ui, sans-serif; resize: vertical; }
+textarea + p { overflow-wrap: anywhere; font-size: 1.25rem; }
+.hint { font-size: .875rem; }
