@@ -6,6 +6,31 @@ No OpenAI key, connection, billing or fallback is used by this feature.
 
 ## Setup (PowerShell, Python 3.11+)
 
+### Start the two services on different ports
+
+From the project directory, keep these running in **two separate terminals**:
+
+```powershell
+# Terminal 1: FastAPI, http://127.0.0.1:8001
+.\start-voice.ps1
+
+# Terminal 2: PHP dashboard, http://localhost:8000
+.\start-dashboard.ps1
+```
+
+Open **http://localhost:8000** for the dashboard, or **http://127.0.0.1:8001**
+for the standalone voice page. The dashboard launcher also finds XAMPP PHP at
+`C:/xampp/php/php.exe` when PHP is absent from PATH. The voice launcher creates
+its virtual environment and installs dependencies on first use. Existing
+`transcription/.env` credentials are preserved. Keep both terminals open.
+
+**Do not start PHP on port 8001.** PHP cannot handle `/ws/transcribe`. In the
+reported failure PHP was listening on IPv6 `localhost:8001`, while the voice
+service uses IPv4 loopback. A `localhost` WebSocket could therefore reach PHP.
+The browser now uses `ws://127.0.0.1:8001/ws/transcribe` on local HTTP pages.
+
+For manual installation or non-Windows systems, use the steps below.
+
 From the repository root:
 
 ```powershell
@@ -36,7 +61,7 @@ transcription/.venv/Scripts/python -m uvicorn transcription.server:app --host lo
 
 Open http://localhost:8001, click **Enregistrer**, allow the microphone, speak and
 click **Arrêter**. After finalization, correct the Arabic transcript as needed.
-For the PHP dashboard, also run `php -S localhost:8000 -t public/` and open
+For the PHP dashboard, also run `php -S localhost:8000 -t public/ public/router.php` and open
 http://localhost:8000. Both pages use the same browser code and speech service.
 
 Linux/macOS: substitute `transcription/.venv/bin/python` and use `cp` to copy files.
@@ -71,7 +96,10 @@ Client-side VAD sends `commit` after 500 ms of silence or 15 seconds; the backen
 uses manual `activityStart` / `activityEnd` events. Each activity is finalized
 before opening the next, avoiding interruption. A server limit forces a boundary
 after 20 seconds. Bounded socket queues apply backpressure during finalization.
-Stop flushes the last PCM samples and waits up to 15 seconds for `turnComplete`.
+Stop flushes the last PCM samples and waits up to 15 seconds for
+`generationComplete` (or `turnComplete`). Digital silence completes on the
+provider activity-end acknowledgement. Nonzero audio without a completion event
+still reports a timeout rather than claiming that uncertain speech is finalized.
 Empty Stop sends no activity; silence can complete with no transcript.
 
 `interimInputTranscription` becomes a browser `partial` event which replaces the
@@ -89,6 +117,32 @@ Previous text is retained but unfinished speech may be incomplete.
 
 ## Limits and deployment
 
+The PHP dashboard reads **`WASLA_WS_URL`** from the process environment or the
+root `.env`, using the existing PHP environment loader. Only that public URL
+is HTML-escaped into a meta tag; keys are never exposed. Leave it empty for the
+local default, or set it to `/ws/transcribe` for a same-origin reverse proxy,
+or an absolute `wss://voice.example/ws/transcribe` for a separate voice server.
+The microphone's existing `data-ws-url` attribute takes precedence, including
+on the standalone page. Do not put credentials in an endpoint URL.
+
+HTTPS pages default to same-origin **WSS**, including localhost. An explicit
+`ws://` override is upgraded to `wss://`; the destination must actually provide
+TLS. Plain Uvicorn on port 8001 does not provide TLS by itself.
+
+`ALLOWED_ORIGINS` in `transcription/.env` is an exact comma-separated allowlist
+of **page origins**, not WebSocket URLs or page paths. Whitespace is trimmed.
+The supplied examples cover localhost/127.0.0.1 on PHP port 8000 and standalone
+port 8001, local Apache port 80, and IPv6 loopback on 8000/8001. Add your exact
+HTTPS/custom-port origin when needed and restart FastAPI. WebSocket validation
+uses the Origin header; adding HTTP CORS middleware does not fix a WebSocket
+handshake. No wildcard or unrestricted origin policy is used.
+
+There is no Docker, Vite, Next.js, or reverse proxy configuration in this
+repository. If deploying behind Nginx, route `/ws/transcribe` to the FastAPI
+service with HTTP/1.1, `Upgrade $http_upgrade`, and `Connection "upgrade"`.
+In Docker, the proxy upstream uses the backend service name; the browser URL
+must remain a browser-reachable public address. See the authentication limits below.
+
 - Sub-500 ms first partial is a target, not a guarantee. Capture alone takes up to
   250 ms; model/network/browser latency adds to it. Final text waits for turn end.
 - Worklet and browser outbound queues are each capped near one second of audio.
@@ -105,11 +159,25 @@ Previous text is retained but unfinished speech may be incomplete.
 
 ## Diagnostics and tests
 
+`GET http://127.0.0.1:8001/healthz` returns service liveness and the WebSocket
+path, with no secrets. It does not assert Gemini availability. FastAPI logs
+accepted/rejected handshakes, missing configuration, provider readiness and
+exception class names without raw provider errors, audio, or credentials.
+The browser console logs connection state, target origin, page origin and
+close code, omitting query strings and provider close reasons.
+
 ```powershell
 # Handshake only: no microphone audio and no key printed.
 transcription/.venv/Scripts/python -m transcription.diagnose
 transcription/.venv/Scripts/python -m unittest discover -s transcription/tests
 node --test transcription/tests/audio.test.mjs transcription/tests/client.test.mjs
+node --test transcription/tests/endpoint.test.mjs
+
+# Optional real Chrome check, with both services running and a valid key.
+# Uses Windows speech synthesis and installed Chrome; never the physical microphone.
+# On other platforms, supply WASLA_TEST_AUDIO pointing to a spoken PCM WAV.
+transcription/.venv/Scripts/python -m pip install playwright
+transcription/.venv/Scripts/python transcription/tests/browser_smoke.py
 ```
 
 Missing key: configure `GEMINI_API_KEY`. A 429/quota error needs a quota reset or

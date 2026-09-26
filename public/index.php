@@ -1,7 +1,13 @@
+<?php
+require_once dirname(__DIR__) . '/config/db.php';
+\Wasla\Config\Database::loadEnv();
+$voiceWebSocketUrl = getenv('WASLA_WS_URL') ?: '';
+?>
 <!DOCTYPE html>
 <html class="h-full dark" lang="fr">
 <head>
     <meta charset="utf-8"/>
+    <meta name="wasla-ws-url" content="<?= htmlspecialchars($voiceWebSocketUrl, ENT_QUOTES, 'UTF-8') ?>"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>WASLA وصلة - Plateforme Nationale Agri-Logistique Logitime / AI-Powered Supply Chain</title>
     

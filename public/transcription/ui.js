@@ -1,5 +1,6 @@
 import { SpeechClient } from "./client.js";
 import { Transcript } from "./transcript.js";
+import { resolveEndpoint } from "./endpoint.js";
 
 const button = document.getElementById("mainMicBtn");
 const output = document.getElementById("darija-text");
@@ -14,12 +15,9 @@ output.after(preview);
 output.setAttribute("aria-label", "Transcription en Darija, modifiable après l’enregistrement");
 status.setAttribute("role", "status");
 // Only the endpoint is public. API keys must stay in transcription/.env.
-const local = ["localhost", "127.0.0.1"].includes(location.hostname);
-const endpoint = button.dataset.wsUrl || (local && location.port !== "8001"
-  ? `ws://${location.hostname}:8001/ws/transcribe`
-  : `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws/transcribe`);
+const configuredEndpoint = button.dataset.wsUrl || document.querySelector('meta[name="wasla-ws-url"]')?.content || "";
 let transcript = new Transcript(), previous = "", initial = "", received = false;
-const client = new SpeechClient(endpoint, event => {
+const client = new SpeechClient("", event => {
   if (event.type === "session") {
     previous = [previous, transcript.text()].filter(Boolean).join(" ");
     transcript = new Transcript();
@@ -53,6 +51,8 @@ const client = new SpeechClient(endpoint, event => {
 });
 button.addEventListener("click", () => {
   if (client.state !== "idle") { void client.stop(); return; }
+  try { client.url = resolveEndpoint(location, configuredEndpoint); }
+  catch (error) { client.setState("idle", error.message); return; }
   initial = output.value;
   previous = "";
   received = false;

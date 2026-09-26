@@ -16,10 +16,10 @@ Gemini `gemini-3.5-transcribe-live`, TEXT modality, VERBATIM transcription,
 documented Arabic hint ar-EG and Moroccan vocabulary. ar-MA recognition is not
 guaranteed. The dedicated model accepts vocabulary hints, not system instructions.
 Server authenticates via GEMINI_API_KEY, sends setup, waits for setupComplete.
-Manual activityStart/activityEnd; wait for turnComplete before the next activity.
+Manual activityStart/activityEnd; wait for generationComplete/turnComplete before the next activity.
 Browser controls: commit/stop. Server: ready, partial, final, stopped, error.
 Interim hypotheses replace rather than append; final segments remain ordered.
-Stop flushes audio and waits for completion. Disconnect never silently replays
+Stop flushes audio and waits for completion; digital silence may complete on an activity-end acknowledgement. Disconnect never silently replays
 uncertain audio. Errors preserve visible text and release microphone resources.
 
 ## Commands

@@ -49,6 +49,7 @@ async def bridge(client, upstream):
     total_bytes = 0
     segment = 0
     partial = ""
+    silent = True
 
     async def send(event):
         await asyncio.wait_for(upstream.send(json.dumps(event)), 5)
@@ -62,7 +63,7 @@ async def bridge(client, upstream):
         await asyncio.wait_for(ended.wait(), 15)
 
     async def upload():
-        nonlocal buffered, total_bytes
+        nonlocal buffered, total_bytes, silent
         while True:
             message = await client.receive()
             if message["type"] == "websocket.disconnect":
@@ -76,7 +77,9 @@ async def bridge(client, upstream):
                     raise ProtocolError("Audio exceeds real-time upload rate.")
                 if not buffered:
                     ended.clear()
+                    silent = True
                     await send({"realtimeInput": {"activityStart": {}}})
+                silent = silent and not any(audio)
                 buffered += len(audio)
                 await send({"realtimeInput": {"audio": {
                     "mimeType": "audio/pcm;rate=24000",
@@ -120,9 +123,15 @@ async def bridge(client, upstream):
                 partial = ""
             if content.get("interrupted"):
                 raise ProtocolError("Transcription Gemini interrompue. Le texte peut être incomplet.")
-            if content.get("turnComplete"):
+            # Transcribe Live emits generationComplete for finalized speech;
+            # unlike conversational models it may never emit turnComplete.
+            if content.get("generationComplete") or content.get("turnComplete"):
                 if partial:
                     raise ProtocolError("Gemini n’a pas finalisé le dernier texte. Réessayez l’enregistrement.")
+                ended.set()
+            # Digital silence yields only an activity acknowledgement, no
+            # generationComplete. Never use this shortcut for nonzero audio.
+            if silent and not partial and event.get("voiceActivity", {}).get("type") == "ACTIVITY_END":
                 ended.set()
         raise ConnectionError("Gemini disconnected.")
 

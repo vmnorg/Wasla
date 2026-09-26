@@ -6,6 +6,11 @@ Le microphone du dashboard utilise désormais un service FastAPI et Gemini Live.
 Consultez [le guide de configuration et de lancement](transcription/README.md).
 Une page autonome est disponible sur `http://localhost:8001` après lancement du service.
 
+Sous Windows, lancez `.\start-voice.ps1` et `.\start-dashboard.ps1` dans deux
+terminaux, puis ouvrez `http://localhost:8000`. Le port **8000 appartient à PHP**,
+le port **8001 à FastAPI** : ne lancez pas PHP sur 8001. Le service vocal local
+est joignable directement sur `http://127.0.0.1:8001/healthz`.
+
 WASLA (Moroccan Arabic for "Connection") is a clean-architecture, zero-dependency native PHP & MySQL platform built to optimize logistics, consolidate agricultural crop shipments, and minimize environmental impact in the Souss-Massa agricultural heartland of Morocco.
 
 ---
@@ -75,7 +80,7 @@ GEMINI_API_KEY=votre_cle_gemini
 ### 4. Lancement du Serveur Web Local
 Lancez le serveur PHP natif directement à la racine du projet :
 ```bash
-php -S localhost:8000 -t public/
+php -S localhost:8000 -t public/ public/router.php
 ```
 Ouvrez ensuite votre navigateur sur [http://localhost:8000](http://localhost:8000).
 

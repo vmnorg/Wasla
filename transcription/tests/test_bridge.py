@@ -51,6 +51,26 @@ def control(kind):
 
 
 class BridgeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_digital_silence_stops_on_activity_ack_without_generation(self):
+        class SilentUpstream(Upstream):
+            async def send(self, raw):
+                if 'activityEnd' in json.loads(raw).get('realtimeInput', {}):
+                    self.events.put_nowait({'voiceActivity': {'type': 'ACTIVITY_END'}})
+        client = Client([binary(bytes(12000)), control('stop')])
+        await asyncio.wait_for(bridge(client, SilentUpstream()), 2)
+        self.assertEqual(client.events, [{'type': 'stopped'}])
+
+    async def test_transcription_generation_complete_finalizes_without_turn_complete(self):
+        class TranscribeUpstream(Upstream):
+            async def send(self, raw):
+                self.sent.append(json.loads(raw))
+                if 'activityEnd' in self.sent[-1].get('realtimeInput', {}):
+                    self.events.put_nowait({'serverContent': {'inputTranscription': {'text': 'test'}}})
+                    self.events.put_nowait({'serverContent': {'generationComplete': True}})
+        client = Client([binary(bytes(12000)), control('stop')])
+        await asyncio.wait_for(bridge(client, TranscribeUpstream()), 2)
+        self.assertEqual([event['type'] for event in client.events], ['final', 'stopped'])
+
     def test_quota_error_is_actionable_without_exposing_provider_message(self):
         error = provider_error({'error': {'code': 429,
                                           'message': 'private request data'}})

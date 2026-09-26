@@ -47,8 +47,18 @@ export class SpeechClient {
   open(generation) {
     if (generation !== this.generation) return;
     this.setState("connecting", "Connexion au service vocal…");
-    const socket = this.socket = new WebSocket(this.url);
+    let socket;
+    try { socket = this.socket = new WebSocket(this.url); }
+    catch { this.finish("Adresse du service vocal invalide ou bloquée par le navigateur."); return; }
     let terminal = false;
+    let connected = false;
+    // Omit URL paths, query parameters and close reasons from logs.
+    const targetOrigin = new URL(this.url).origin;
+    socket.onopen = () => {
+      connected = true;
+      this.lastError = "";
+      console.info("[voice] WebSocket connected", { target: targetOrigin });
+    };
     this.connectTimer = setTimeout(() => socket.close(), 20000);
     socket.onmessage = ({ data }) => {
       if (socket !== this.socket) return;
@@ -71,10 +81,15 @@ export class SpeechClient {
       }
     };
     socket.onerror = () => {
-      this.lastError = `Service vocal inaccessible (${this.url}). Vérifiez que FastAPI est démarré et que l’adresse de cette page figure dans ALLOWED_ORIGINS.`;
+      if (socket !== this.socket) return;
+      console.warn("[voice] WebSocket connection failed", { target: targetOrigin, pageOrigin: globalThis.location?.origin });
+      this.lastError ||= connected
+        ? "Connexion au service vocal interrompue. Vérifiez les journaux FastAPI."
+        : `Service vocal inaccessible (${targetOrigin}). Démarrez le backend avec .\\start-voice.ps1 et vérifiez ALLOWED_ORIGINS (origine : ${globalThis.location?.origin || "inconnue"}).`;
     };
-    socket.onclose = () => {
+    socket.onclose = (event) => {
       if (socket !== this.socket || generation !== this.generation) return;
+      console.info("[voice] WebSocket closed", { target: targetOrigin, code: event?.code, connected });
       clearTimeout(this.connectTimer);
       this.node?.port.postMessage("reset");
       if (terminal || this.state === "stopping" || this.retries >= 3) {

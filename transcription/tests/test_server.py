@@ -29,6 +29,29 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(self.client.get('/transcription/pcm-worklet.js').status_code, 200)
         self.assertEqual(self.client.get('/.env').status_code, 404)
 
+    def test_health_reports_route_without_secrets(self):
+        self.assertEqual(self.client.get('/healthz').json(), {
+            'status': 'ok', 'websocket_path': '/ws/transcribe'})
+
+    def test_origin_config_trims_whitespace_and_trailing_slashes(self):
+        self.assertEqual(server.parse_origins(' http://localhost:8000/ , ,http://127.0.0.1:8000 '),
+                         {'http://localhost:8000', 'http://127.0.0.1:8000'})
+
+    def test_both_documented_php_origins_connect(self):
+        for origin in ('http://localhost:8000', 'http://127.0.0.1:8000'):
+            with self.subTest(origin=origin), patch.dict(os.environ, {'GEMINI_API_KEY': 'test'}), patch.object(server, 'connect', return_value=Connection()):
+                with self.client.websocket_connect('/ws/transcribe', headers={'origin': origin}) as ws:
+                    self.assertEqual(ws.receive_json()['type'], 'ready')
+                    ws.send_json({'type': 'stop'})
+                    self.assertEqual(ws.receive_json()['type'], 'stopped')
+
+    def test_origin_failure_logs_no_request_secrets(self):
+        with self.assertLogs('uvicorn.error', level='WARNING') as logs:
+            with self.assertRaises(WebSocketDisconnect):
+                with self.client.websocket_connect('/ws/transcribe', headers={'origin': 'https://foreign.example/private-secret'}):
+                    pass
+        self.assertNotIn('private-secret', ''.join(logs.output))
+
     def test_foreign_origin_denied(self):
         with self.assertRaises(WebSocketDisconnect):
             with self.client.websocket_connect('/ws/transcribe', headers={'origin': 'https://foreign.example'}):
