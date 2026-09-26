@@ -31,7 +31,7 @@ first time while the server is running, the next connection reads it automatical
 Restart after replacing an existing key or changing origins/limits.
 
 ```powershell
-transcription/.venv/Scripts/python -m uvicorn transcription.server:app --host 127.0.0.1 --port 8001 --ws-max-size 24000 --ws-max-queue 8
+transcription/.venv/Scripts/python -m uvicorn transcription.server:app --host localhost --port 8001 --ws-max-size 24000 --ws-max-queue 8
 ```
 
 Open http://localhost:8001, click **Enregistrer**, allow the microphone, speak and
