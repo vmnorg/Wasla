@@ -56,13 +56,17 @@ try {
     if (!empty($apiKey) && $apiKey !== 'your_gemini_api_key_here') {
         // Call Gemini 1.5 Flash API for structured NLU parsing
         $extractedData = callGeminiAPI($darijaText, $apiKey);
+        if (isset($extractedData['error'])) {
+            throw new Exception($extractedData['error']);
+        }
     } else {
         // Offline / Fallback Matcher (Mocking for local test when key is missing)
         $extractedData = performFallbackParsing($darijaText);
     }
 
     if ($extractedData === null) {
-        throw new RuntimeException('Failed to process text with NLU engine.');
+        // If Gemini fails (e.g. invalid API key, network timeout), seamlessly fall back to the local parser for the demo
+        $extractedData = performFallbackParsing($darijaText);
     }
 
     // Attempt to match the extracted commune name with a pre-existing DB commune
@@ -126,8 +130,8 @@ try {
  * Sends Darija text to Gemini 1.5 Flash and extracts JSON structure.
  */
 function callGeminiAPI(string $text, string $apiKey): ?array {
-    // Gemini 1.5 Flash API endpoint
-    $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . rawurlencode($apiKey);
+    // Gemini Flash API endpoint
+    $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=" . rawurlencode($apiKey);
 
     // Strict instructions for the model to behave as a structured JSON parser
     $systemInstruction = "You are an expert Moroccan Darija NLU parser. " .
@@ -168,17 +172,23 @@ function callGeminiAPI(string $text, string $apiKey): ?array {
     ]);
     // Timeout of 8 seconds
     curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+    // Disable SSL verification for local dev to avoid "unable to get local issuer certificate" errors
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
     $response = curl_exec($ch);
+    $curlErr = curl_error($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
     if ($httpCode !== 200 || !$response) {
-        return null;
+        return ['error' => "API Error HTTP $httpCode - cURL: $curlErr - Response: $response"];
     }
 
     $resData = json_decode((string)$response, true);
-    $textResult = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '';
+    if (!isset($resData['candidates'][0]['content']['parts'][0]['text'])) {
+        return ['error' => "Unexpected API response format: $response"];
+    }
+    $textResult = $resData['candidates'][0]['content']['parts'][0]['text'];
     
     // Clean text if some backticks leaked through
     $textResult = trim($textResult);

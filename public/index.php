@@ -12,6 +12,8 @@ $voiceWebSocketUrl = getenv('WASLA_WS_URL') ?: '';
     <title>WASLA وصلة - Plateforme Nationale Agri-Logistique Logitime / AI-Powered Supply Chain</title>
     
     <script>try { document.documentElement.classList.toggle('dark', localStorage.getItem('wasla-theme') !== 'light'); } catch (_) {}</script>
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
     <link rel="stylesheet" href="css/pitch.css"/>
     <!-- Preconnect & Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -778,6 +780,8 @@ $voiceWebSocketUrl = getenv('WASLA_WS_URL') ?: '';
                 zoom: 6,
                 zoomControl: false
             });
+            // Fix Leaflet grey map tiles issue on mobile flex containers
+            setTimeout(() => { if (map) map.invalidateSize(); }, 500);
 
             // Use standard free OpenStreetMap tiles (Fix: guaranteed clean tiles without watermark)
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

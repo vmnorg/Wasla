@@ -2,3 +2,15 @@
 vendor/
 node_modules/
 *.zip
+
+# AI tooling
+.claude/
+.agents/
+graphify-out/
+CLAUDE.md
+SPEC.md
+SPEC-transcription.md
+tasks/
+transcription/VERIFICATION.md
+test_gemini.php
+scratch/
